@@ -1,18 +1,36 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div class="container">
+      <div class="row">
+        <template v-for="donacion in donaciones">
+          <Donacion :donacion="donacion" v-bind:key="donacion.id" />
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 
+import Donacion from "@/components/Donacion.vue";
+import donacionService from "@/services/donacionServices";
 export default {
   name: "Home",
+  data() {
+    return {
+      donaciones: []
+    };
+  },
   components: {
-    HelloWorld
+    Donacion
+  },
+  mounted() {
+    donacionService.listar().then(response => {
+      this.donaciones = response;
+      console.log(response);
+    });
   }
 };
 </script>
