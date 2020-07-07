@@ -3,7 +3,13 @@
     <div class="container">
       <div class="row">
         <template v-for="donacion in donaciones">
-          <Donacion :donacion="donacion" v-bind:key="donacion.id" />
+          <div
+            :class="selected == donacion.id ? 'active donacion' : 'donacion'"
+            v-on:click="select(donacion.id)"
+            v-bind:key="donacion.id"
+          >
+            <Donacion :donacion="donacion"></Donacion>
+          </div>
         </template>
       </div>
     </div>
@@ -19,7 +25,8 @@ export default {
   name: "Home",
   data() {
     return {
-      donaciones: []
+      donaciones: [],
+      selected: 0
     };
   },
   components: {
@@ -30,6 +37,22 @@ export default {
       this.donaciones = response;
       console.log(response);
     });
+  },
+  methods: {
+    select(id) {
+      this.selected = id;
+    }
   }
 };
 </script>
+
+<style scoped>
+.donacion {
+  position: relative;
+  top:0;
+  transition: top 0.5s linear;
+}
+.active {
+  top: -20px;
+}
+</style>
